@@ -1,0 +1,26 @@
+'''
+Created on 2019. 11. 13.
+
+@author: 가오리
+UNNEWS / REFUGEES
+https://news.un.org/feed/subscribe/en/news/topic/migrants-and-refugees/feed/rss.xml
+https://news.un.org/feed/subscribe/en/news/topic/climate-change/feed/rss.xml
+'''
+import urllib.request
+from idlelib.iomenu import encoding
+
+urlRefugee = "https://news.un.org/feed/subscribe/en/news/topic/migrants-and-refugees/feed/rss.xml"
+urlClimate = "https://news.un.org/feed/subscribe/en/news/topic/climate-change/feed/rss.xml"
+
+result_data1 = urllib.request.urlopen(urlRefugee).read()
+result_data2 = urllib.request.urlopen(urlClimate).read()
+
+textRefugee = result_data1.decode("utf-8")
+textClimat = result_data2.decode("utf-8")
+
+print("FROM HEAR, It's about Refugees")
+print(textRefugee)
+
+with open("un_refugee_page.html", "wt", encoding="utf-8") as emptyF:
+    emptyF.write(textRefugee)
+    print("un_refugee_page.html 저장 완료")
