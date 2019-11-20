@@ -1,0 +1,73 @@
+'''
+Created on 2019. 11. 14.
+
+@author: 가오리
+https://news.un.org/feed/subscribe/en/news/topic/migrants-and-refugees/feed/rss.xml
+https://news.un.org/feed/subscribe/en/news/topic/climate-change/feed/rss.xml
+'''
+import urllib.request as reqt
+import zipfile
+import requests
+import re  # Regular Expression
+from bs4 import BeautifulSoup
+
+url = "https://news.un.org/feed/subscribe/en/news/topic/migrants-and-refugees/feed/rss.xml"
+
+# rest_date = requests.get("https://news.un.org/feed/subscribe/en/news/topic/migrants-and-refugees/feed/rss.xml")
+# bSoup= rest_date.content
+rest_data = reqt.urlopen(url).read()
+
+'''
+? xml 파일을 로드하려면 ?
+import xml.etree.ElementtTree as ET
+doc = ET.parse(file_name)
+root = doc.getroot()
+'''
+
+# bSoup = BeautifulSoup(rest_data, "html.parser").text
+bSoup = BeautifulSoup(rest_data, "html.parser")
+
+
+title = bSoup.find("title").string
+# title = re.sub('<.+?>', '', title, 0).strip()
+pubDate = bSoup.find("pubDate")
+# pubDate = re.sub('<.+?>', '', pubDate, 0).strip()
+
+# print(title)
+
+title_list = bSoup.select("title")
+date_list = bSoup.select("pubDate")
+#print(title_list)
+#print(bSoup)
+
+# 반복문으로 돌려보기 *Try
+# Enumerate is a built-in function of Python. 
+'''
+my_list = ['apple', 'banana', 'grapes', 'pear'] 
+ for c, value in enumerate(my_list, 1):
+print(c, value)
+인자 3개 불가 
+'''
+'''
+for i, title in enumerate(title_list, 0):
+    i += 1 
+    print("UN NEWS Title {} : {}".format(i, title))
+'''
+
+'''
+for i, all in enumerate(all_list, 0):
+    i += 1
+    date = all_list.find("pubdate")
+    title = all_list.find("title")
+    print("UN NEWS Title {} : [{}] : {}".format(i, date, title))
+'''
+# invalid_tag = ['pubDate', 'title']
+
+for i, date, title in zip(range(len(title_list)), date_list, title_list):
+    print("UN NEWS  {} : {} : {}".format(i, date.text, title.text))
+    
+'''
+    pattern = '<[^>]*>'
+    repl = []
+    date = re.sub(pattern=pattern, repl = [], string=date_list)
+  '''
